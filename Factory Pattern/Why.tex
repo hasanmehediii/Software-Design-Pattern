@@ -1,0 +1,592 @@
+\documentclass[12pt, a4paper]{article}
+
+% -------------------------------------------------------
+% PACKAGES
+% -------------------------------------------------------
+\usepackage[a4paper, margin=1in, headheight=15pt]{geometry}
+\usepackage{fontenc}
+\usepackage{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{listings}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{enumitem}
+\usepackage{titlesec}
+\usepackage{fancyhdr}
+\usepackage{tcolorbox}
+\usepackage{tikz}
+\usepackage{hyperref}
+\usepackage{setspace}
+\usepackage{parskip}
+\usepackage{amsmath}
+\usepackage{mdframed}
+\usepackage{caption}
+
+\tcbuselibrary{skins, breakable, listings}
+
+% -------------------------------------------------------
+% COLORS
+% -------------------------------------------------------
+\definecolor{primaryblue}{RGB}{30, 90, 160}
+\definecolor{secondaryblue}{RGB}{70, 130, 200}
+\definecolor{lightblue}{RGB}{220, 235, 252}
+\definecolor{codered}{RGB}{180, 30, 30}
+\definecolor{codegreen}{RGB}{30, 130, 30}
+\definecolor{codegray}{RGB}{100, 100, 100}
+\definecolor{codebg}{RGB}{245, 247, 250}
+\definecolor{keywordcolor}{RGB}{0, 80, 180}
+\definecolor{stringcolor}{RGB}{163, 21, 21}
+\definecolor{commentcolor}{RGB}{80, 120, 80}
+\definecolor{warnbox}{RGB}{255, 243, 220}
+\definecolor{warnborder}{RGB}{210, 140, 30}
+\definecolor{successbox}{RGB}{220, 245, 220}
+\definecolor{successborder}{RGB}{50, 150, 50}
+\definecolor{sectionbg}{RGB}{240, 245, 255}
+
+% -------------------------------------------------------
+% HYPERREF SETUP
+% -------------------------------------------------------
+\hypersetup{
+    colorlinks=true,
+    linkcolor=primaryblue,
+    urlcolor=secondaryblue,
+    pdftitle={Factory Method Design Pattern},
+    pdfauthor={Smart Transportation Management System Report},
+}
+
+% -------------------------------------------------------
+% PAGE STYLE
+% -------------------------------------------------------
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\textcolor{primaryblue}{\textbf{Factory Method Design Pattern}}}
+\fancyhead[R]{\small\textcolor{codegray}{Smart Transportation Management System}}
+\fancyfoot[C]{\textcolor{codegray}{\thepage}}
+\renewcommand{\headrulewidth}{0.5pt}
+\renewcommand{\headrule}{\hbox to\headwidth{\color{primaryblue}\leaders\hrule height \headrulewidth\hfill}}
+
+% -------------------------------------------------------
+% SECTION FORMATTING
+% -------------------------------------------------------
+\titleformat{\section}
+  {\Large\bfseries\color{primaryblue}}
+  {\thesection}{1em}{}[{\color{primaryblue}\titlerule[1pt]}]
+
+\titleformat{\subsection}
+  {\large\bfseries\color{secondaryblue}}
+  {\thesubsection}{1em}{}
+
+\titleformat{\subsubsection}
+  {\normalsize\bfseries\color{primaryblue}}
+  {\thesubsubsection}{1em}{}
+
+\titlespacing*{\section}{0pt}{18pt}{8pt}
+\titlespacing*{\subsection}{0pt}{12pt}{5pt}
+\titlespacing*{\subsubsection}{0pt}{10pt}{4pt}
+
+% -------------------------------------------------------
+% JAVA LISTINGS STYLE
+% -------------------------------------------------------
+\lstdefinestyle{javaStyle}{
+    language=Java,
+    backgroundcolor=\color{codebg},
+    basicstyle=\ttfamily\small,
+    keywordstyle=\bfseries\color{keywordcolor},
+    stringstyle=\color{stringcolor},
+    commentstyle=\itshape\color{commentcolor},
+    numberstyle=\tiny\color{codegray},
+    numbers=left,
+    numbersep=8pt,
+    stepnumber=1,
+    breaklines=true,
+    breakatwhitespace=false,
+    showstringspaces=false,
+    frame=single,
+    framesep=4pt,
+    rulecolor=\color{secondaryblue},
+    tabsize=4,
+    captionpos=b,
+    xleftmargin=15pt,
+    xrightmargin=5pt,
+    morekeywords={interface, implements, abstract, override, extends},
+}
+
+\lstset{style=javaStyle}
+
+% -------------------------------------------------------
+% CUSTOM BOXES
+% -------------------------------------------------------
+\newtcolorbox{definitionbox}[1]{
+    colback=lightblue,
+    colframe=primaryblue,
+    fonttitle=\bfseries\color{white},
+    title=#1,
+    arc=4pt,
+    boxrule=1pt,
+    left=8pt, right=8pt, top=6pt, bottom=6pt,
+}
+
+\newtcolorbox{warningbox}{
+    colback=warnbox,
+    colframe=warnborder,
+    fonttitle=\bfseries,
+    title={\textcolor{warnborder}{Before Refactoring --- Problem}}  ,
+    arc=4pt,
+    boxrule=1pt,
+    left=8pt, right=8pt, top=6pt, bottom=6pt,
+}
+
+\newtcolorbox{successboxenv}{
+    colback=successbox,
+    colframe=successborder,
+    fonttitle=\bfseries,
+    title={\textcolor{successborder}{After Refactoring --- Solution}},
+    arc=4pt,
+    boxrule=1pt,
+    left=8pt, right=8pt, top=6pt, bottom=6pt,
+}
+
+\newtcolorbox{infobox}[1]{
+    colback=sectionbg,
+    colframe=secondaryblue,
+    fonttitle=\bfseries\color{primaryblue},
+    title=#1,
+    arc=4pt,
+    boxrule=0.8pt,
+    left=8pt, right=8pt, top=6pt, bottom=6pt,
+}
+
+% -------------------------------------------------------
+% DOCUMENT
+% -------------------------------------------------------
+\begin{document}
+
+% ========================
+% TITLE PAGE
+% ========================
+\begin{titlepage}
+    \centering
+    \vspace*{1.5cm}
+
+    {\Huge\bfseries\color{primaryblue} Factory Method\\[6pt] Design Pattern}
+
+    \vspace{0.4cm}
+    {\large\color{codegray}\rule{10cm}{1pt}}
+
+    \vspace{0.6cm}
+    {\Large\color{secondaryblue} Theory, Application \& Refactoring Report}
+
+    \vspace{0.4cm}
+    {\normalsize\color{codegray} Smart Transportation Management System --- Java}
+
+    \vspace{2.5cm}
+
+    \begin{tcolorbox}[
+        colback=lightblue,
+        colframe=primaryblue,
+        width=10cm,
+        arc=6pt,
+        boxrule=1pt,
+        halign=center
+    ]
+        \centering
+        \textbf{\color{primaryblue}Pattern Category:} Creational Design Pattern\\[4pt]
+        \textbf{\color{primaryblue}Language:} Java\\[4pt]
+        \textbf{\color{primaryblue}Scope:} Object Creation \& Factory Abstraction
+    \end{tcolorbox}
+
+    \vfill
+
+    {\small\color{codegray} Prepared for: Software Design Patterns Course}\\[4pt]
+    {\small\color{codegray} \today}
+\end{titlepage}
+
+% ========================
+% TABLE OF CONTENTS
+% ========================
+\tableofcontents
+\newpage
+
+% ========================
+% PART 1: THEORY
+% ========================
+\section{Introduction to Design Patterns}
+
+Before understanding the Factory Method Pattern specifically, it is important to understand what design patterns are and why software engineers use them.
+
+\begin{definitionbox}{What is a Design Pattern?}
+A \textbf{design pattern} is a reusable, well-tested solution to a commonly occurring problem in software design. It is not finished code you can paste directly into your program --- rather, it is a \textit{blueprint} or \textit{template} that describes how to solve a problem in a structured way.
+
+Design patterns were popularised by the ``Gang of Four'' (GoF) in their 1994 book \textit{Design Patterns: Elements of Reusable Object-Oriented Software}.
+\end{definitionbox}
+
+\vspace{6pt}
+
+Design patterns are grouped into three main categories:
+
+\begin{center}
+\begin{tabular}{>{\bfseries\color{primaryblue}}l p{9cm}}
+\toprule
+\textbf{\color{black}Category} & \textbf{Description} \\
+\midrule
+Creational & Deal with \textit{object creation}. Control how and when objects are instantiated. \\[4pt]
+Structural & Deal with \textit{object composition}. Define how objects and classes are assembled. \\[4pt]
+Behavioural & Deal with \textit{communication} between objects and responsibilities. \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\vspace{6pt}
+The \textbf{Factory Method Pattern} belongs to the \textbf{Creational} category.
+
+% ========================
+\section{Factory Method Design Pattern --- Theory}
+
+\subsection{What Is the Factory Method Pattern?}
+
+\begin{definitionbox}{Definition}
+The \textbf{Factory Method Pattern} defines an interface (or abstract class) for creating an object, but lets \textit{subclasses} decide which class to instantiate. The factory method defers object instantiation to subclasses.
+\end{definitionbox}
+
+\vspace{6pt}
+
+In simple terms: instead of writing \texttt{new SomeClass()} directly inside your main or client code, you call a \textit{factory method} that decides which object to create and returns it. The client code never needs to know the details of \textit{how} the object was built.
+
+Think of it like ordering food at a restaurant. You say ``I want a burger'', and the kitchen (factory) prepares it for you. You do not need to know the recipe, ingredients, or cooking method. You simply receive the finished product.
+
+\subsection{Why Do We Need It?}
+
+Consider this typical beginner code without any pattern:
+
+\begin{lstlisting}[caption={Direct object creation --- tightly coupled code}]
+// In main() or client code:
+if (userChoice.equals("Bus")) {
+    Vehicle v = new Bus();       // tightly coupled
+} else if (userChoice.equals("Taxi")) {
+    Vehicle v = new Taxi();      // tightly coupled
+} else if (userChoice.equals("Scooter")) {
+    Vehicle v = new ElectricScooter(); // tightly coupled
+}
+\end{lstlisting}
+
+\vspace{4pt}
+
+\begin{warningbox}
+\textbf{Problems with the above approach:}
+\begin{itemize}[noitemsep]
+    \item Every time a new vehicle type is added (e.g., Train, Boat), the \texttt{main()} class must be modified.
+    \item Object creation logic is mixed with business logic --- hard to read and maintain.
+    \item Unit testing is difficult because \texttt{main()} depends on concrete classes.
+    \item Violates the \textbf{Open/Closed Principle}: classes should be \textit{open for extension} but \textit{closed for modification}.
+\end{itemize}
+\end{warningbox}
+
+\subsection{How Does the Factory Method Pattern Solve This?}
+
+\begin{successboxenv}
+\textbf{With the Factory Method Pattern:}
+\begin{itemize}[noitemsep]
+    \item A dedicated factory class handles object creation.
+    \item The client code only calls \texttt{factory.createVehicle()} --- it never uses \texttt{new} directly.
+    \item Adding a new vehicle means adding a new factory class \textit{only} --- existing code is untouched.
+    \item Each factory class has a single responsibility: create one type of object.
+\end{itemize}
+\end{successboxenv}
+
+\subsection{Key Benefits}
+
+\begin{enumerate}[leftmargin=*, label=\textbf{\arabic*.}]
+    \item \textbf{Loose Coupling} \\
+    The client code depends on the abstract \texttt{VehicleFactory} and \texttt{Vehicle} interface, not on any specific class like \texttt{Bus} or \texttt{Taxi}. Changing the internal implementation of \texttt{Bus} has zero impact on the client.
+
+    \item \textbf{Open/Closed Principle (OCP)} \\
+    The system is open for extension (add \texttt{TrainFactory}) but closed for modification (you do not touch existing factories or \texttt{main()}).
+
+    \item \textbf{Single Responsibility Principle (SRP)} \\
+    Each factory class has exactly one job: creating one type of vehicle. This makes the code easier to understand, test, and maintain.
+
+    \item \textbf{Scalability} \\
+    As the number of vehicle types grows (5, 10, 50), the architecture stays clean. You just keep adding factory classes without restructuring anything.
+
+    \item \textbf{Testability} \\
+    Because factories are separate classes, you can mock or replace them in unit tests without touching production code.
+
+    \item \textbf{Readability} \\
+    The intent of the code becomes clear. \texttt{new BusFactory().createVehicle()} reads like plain English: ``use the bus factory to create a vehicle.''
+\end{enumerate}
+
+\subsection{When Should You Use the Factory Method Pattern?}
+
+Use this pattern when:
+
+\begin{itemize}[leftmargin=*, noitemsep]
+    \item You do not know ahead of time which class you will need to instantiate.
+    \item You want subclasses to control which objects are created.
+    \item Your code creates objects of the same family (vehicles, shapes, users) but the exact type varies.
+    \item You want to centralise and encapsulate creation logic.
+    \item You anticipate that the number of concrete types will grow over time.
+\end{itemize}
+
+\subsection{Structure of the Factory Method Pattern}
+
+The pattern consists of four roles:
+
+\begin{center}
+\begin{tabular}{>{\bfseries\color{primaryblue}}l l p{7cm}}
+\toprule
+\textbf{\color{black}Role} & \textbf{Also Called} & \textbf{Responsibility} \\
+\midrule
+Product & Interface & Defines the common interface all products must follow \\[4pt]
+Concrete Product & Implementation & The real object that is created (Bus, Taxi, etc.) \\[4pt]
+Creator & Abstract Factory & Declares the factory method; may also define shared logic \\[4pt]
+Concrete Creator & Concrete Factory & Overrides the factory method to return a specific product \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subsection{How to Implement the Factory Method Pattern --- Step by Step}
+
+\begin{infobox}{Implementation Guide}
+\textbf{Step 1:} Define a \textbf{Product Interface} that all products will implement.\\[4pt]
+\textbf{Step 2:} Create \textbf{Concrete Product} classes that implement the interface.\\[4pt]
+\textbf{Step 3:} Create an \textbf{Abstract Creator} (abstract class) with an abstract \texttt{createProduct()} factory method.\\[4pt]
+\textbf{Step 4:} Create \textbf{Concrete Creator} subclasses, each overriding \texttt{createProduct()} to return one specific product.\\[4pt]
+\textbf{Step 5:} In the \textbf{Client Code}, use the abstract creator type and call the factory method. Never use \texttt{new ConcreteProduct()} directly.
+\end{infobox}
+
+\newpage
+
+% ========================
+% PART 2: CHANGES
+% ========================
+\section{Refactoring the Smart Transportation Management System}
+
+\subsection{Overview of Changes}
+
+The original code provided a working system with a \texttt{Vehicle} interface and four concrete vehicle classes. However, it lacked any structural design and left object creation entirely unmanaged. The following table summarises all the changes made during refactoring.
+
+\begin{center}
+\begin{tabular}{>{\bfseries}l l l p{5.5cm}}
+\toprule
+\textbf{Component} & \textbf{Original} & \textbf{After Refactoring} & \textbf{Reason} \\
+\midrule
+\texttt{Vehicle} interface & Present & Kept unchanged & Already well-defined \\[4pt]
+\texttt{Bus}, \texttt{Taxi}, etc. & Present & Minor improvements & Core logic was correct \\[4pt]
+\texttt{VehicleFactory} & Absent & Added (abstract class) & Core of the pattern \\[4pt]
+\texttt{BusFactory} & Absent & Added & Creates \texttt{Bus} only \\[4pt]
+\texttt{TaxiFactory} & Absent & Added & Creates \texttt{Taxi} only \\[4pt]
+\texttt{MotorcycleDeliveryFactory} & Absent & Added & Creates \texttt{MotorcycleDelivery} \\[4pt]
+\texttt{ElectricScooterFactory} & Absent & Added & Creates \texttt{ElectricScooter} \\[4pt]
+\texttt{Main} / Client Code & Absent & Added with menu & Demonstrates pattern usage \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subsection{Change 1 --- Vehicle Interface Kept Intact}
+
+\subsubsection{Original Code}
+
+\begin{lstlisting}[caption={Original Vehicle interface}]
+interface Vehicle {
+    void startTrip();
+    double calculateFare(double distance);
+    void assignRoute(String route);
+    void getVehicleInfo();
+    String getVehicleType();
+}
+\end{lstlisting}
+
+\subsubsection{Decision}
+
+The \texttt{Vehicle} interface was \textbf{not modified}. It already correctly defines the contract that all vehicle types must follow. This is precisely the \textbf{Product Interface} role in the Factory Method Pattern. Keeping it unchanged confirms that the original design had a good foundation --- it only lacked the creation layer on top.
+
+\subsection{Change 2 --- Concrete Vehicle Classes Improved}
+
+\subsubsection{Original Code (example: Bus)}
+
+\begin{lstlisting}[caption={Original Bus class --- getVehicleInfo()}]
+@Override
+public void getVehicleInfo() {
+    System.out.println("Vehicle: Bus");
+    System.out.println("Capacity: " + capacity);
+    System.out.println("Fare per KM: " + farePerKm);
+}
+\end{lstlisting}
+
+\subsubsection{Refactored Code}
+
+\begin{lstlisting}[caption={Refactored Bus class --- improved output formatting}]
+@Override
+public void getVehicleInfo() {
+    System.out.println("Vehicle     : Bus");
+    System.out.println("Capacity    : " + capacity + " passengers");
+    System.out.println("Fare per KM : " + farePerKm + " BDT");
+}
+\end{lstlisting}
+
+\subsubsection{Why This Change?}
+
+The output formatting was improved for two reasons. First, aligned labels (using spaces) make the printed information easier to read at a glance, which matters when the system displays multiple vehicle types in sequence. Second, adding units (\texttt{passengers}, \texttt{BDT}) makes the output self-explanatory --- a reader does not need to guess whether capacity is in seats, tonnes, or cubic metres, or whether the fare is in Taka, Dollars, or any other currency.
+
+The core logic (\texttt{farePerKm}, \texttt{capacity} fields, method implementations) was kept identical, as it was already correct.
+
+\subsection{Change 3 --- Abstract Creator: VehicleFactory (New Addition)}
+
+\subsubsection{Code Added}
+
+\begin{lstlisting}[caption={Abstract VehicleFactory --- the heart of the pattern}]
+abstract class VehicleFactory {
+
+    public abstract Vehicle createVehicle();
+
+    public Vehicle orderVehicle(String route) {
+        Vehicle vehicle = createVehicle();
+        System.out.println("\n[Factory] Creating a "
+            + vehicle.getVehicleType() + "...");
+        vehicle.assignRoute(route);
+        return vehicle;
+    }
+}
+\end{lstlisting}
+
+\subsubsection{Why This Change?}
+
+This is the most critical addition. \texttt{VehicleFactory} is the \textbf{Abstract Creator} in the Factory Method Pattern. Here is why each part matters:
+
+\begin{itemize}[leftmargin=*, label=\textcolor{primaryblue}{\textbullet}]
+    \item \textbf{\texttt{public abstract Vehicle createVehicle()}} --- This is the factory method itself. It is declared \texttt{abstract} so that each subclass \textit{must} provide its own implementation. The return type is \texttt{Vehicle} (the interface), not a concrete class --- this ensures the client code remains decoupled from any specific vehicle type.
+
+    \item \textbf{\texttt{public Vehicle orderVehicle(String route)}} --- This is a convenience method that uses the factory method. It calls \texttt{createVehicle()}, which triggers whichever subclass overrides it, and then automatically assigns a route. This demonstrates the pattern's power: the shared logic lives in the abstract class, while object creation is delegated to subclasses.
+\end{itemize}
+
+Without this class, there is no factory --- the system is just a collection of unrelated vehicle classes with no controlled creation strategy.
+
+\subsection{Change 4 --- Concrete Creators: Four Factory Classes (New Additions)}
+
+\subsubsection{Code Added}
+
+\begin{lstlisting}[caption={Four concrete factory classes}]
+class BusFactory extends VehicleFactory {
+    @Override
+    public Vehicle createVehicle() {
+        return new Bus();
+    }
+}
+
+class TaxiFactory extends VehicleFactory {
+    @Override
+    public Vehicle createVehicle() {
+        return new Taxi();
+    }
+}
+
+class MotorcycleDeliveryFactory extends VehicleFactory {
+    @Override
+    public Vehicle createVehicle() {
+        return new MotorcycleDelivery();
+    }
+}
+
+class ElectricScooterFactory extends VehicleFactory {
+    @Override
+    public Vehicle createVehicle() {
+        return new ElectricScooter();
+    }
+}
+\end{lstlisting}
+
+\subsubsection{Why This Change?}
+
+Each factory class is a \textbf{Concrete Creator}. These classes carry all of the \texttt{new} keyword usage --- they are the \textit{only} place where a specific vehicle type is instantiated.
+
+\begin{itemize}[leftmargin=*, label=\textcolor{primaryblue}{\textbullet}]
+    \item \textbf{Single Responsibility:} Each factory does exactly one thing. \texttt{BusFactory} creates buses. \texttt{TaxiFactory} creates taxis. Nothing more, nothing less.
+    \item \textbf{Isolation:} If the \texttt{Bus} class constructor changes (e.g., requires a new parameter), only \texttt{BusFactory} needs updating --- no other part of the system is affected.
+    \item \textbf{Extensibility:} To add a \texttt{Train} vehicle, a developer simply adds a \texttt{Train} class and a \texttt{TrainFactory} class. Zero existing code is modified.
+\end{itemize}
+
+\subsection{Change 5 --- Client Code with Menu (New Addition)}
+
+\subsubsection{Code Added}
+
+\begin{lstlisting}[caption={Client code --- getFactory() helper method}]
+public static VehicleFactory getFactory(int choice) {
+    switch (choice) {
+        case 1: return new BusFactory();
+        case 2: return new TaxiFactory();
+        case 3: return new MotorcycleDeliveryFactory();
+        case 4: return new ElectricScooterFactory();
+        default: return null;
+    }
+}
+\end{lstlisting}
+
+\begin{lstlisting}[caption={Client code --- using the factory (no direct new Vehicle())}]
+VehicleFactory factory = getFactory(vehicleChoice);
+Vehicle myVehicle = factory.orderVehicle(route);
+myVehicle.getVehicleInfo();
+double fare = myVehicle.calculateFare(distance);
+myVehicle.startTrip();
+\end{lstlisting}
+
+\subsubsection{Why This Change?}
+
+The original code had no \texttt{main()} method or client code at all. The refactored version introduces a complete interactive main class that demonstrates the pattern correctly.
+
+The \texttt{getFactory()} method acts as a \textbf{factory selector}. It is the only method that maps a user's input number to a factory class. Critically:
+
+\begin{itemize}[leftmargin=*, label=\textcolor{primaryblue}{\textbullet}]
+    \item The \texttt{main()} method \textbf{never calls \texttt{new Bus()} or \texttt{new Taxi()}}. All construction is delegated to factories.
+    \item The variable \texttt{myVehicle} is typed as \texttt{Vehicle} (the interface), not as any concrete class. This means the rest of the loop body works identically regardless of which vehicle was selected.
+    \item Adding a new vehicle (e.g., \texttt{Train}) only requires: (1) a \texttt{Train} class, (2) a \texttt{TrainFactory} class, and (3) one new \texttt{case} line in \texttt{getFactory()}. The while loop, the fare calculation, the trip start --- all remain untouched.
+\end{itemize}
+
+\section{Comparison: Before vs.\ After Refactoring}
+
+\begin{center}
+\begin{tabular}{p{5.8cm} p{5.8cm}}
+\toprule
+\textbf{\color{codered}Before Refactoring} & \textbf{\color{codegreen}After Refactoring} \\
+\midrule
+No main class or client code & Full interactive main class with menu \\[4pt]
+No object creation strategy & Factory Method Pattern applied \\[4pt]
+\texttt{new Bus()}, \texttt{new Taxi()} scattered everywhere & All \texttt{new} calls isolated in factory classes \\[4pt]
+Adding a new vehicle requires editing main logic & Adding a new vehicle only requires a new class \\[4pt]
+No separation of concerns & Creation logic separated from business logic \\[4pt]
+Tightly coupled to concrete classes & Client depends only on abstract types \\[4pt]
+Difficult to test in isolation & Each factory and vehicle is independently testable \\[4pt]
+Violates Open/Closed Principle & Follows Open/Closed Principle \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\section{Design Principles Applied}
+
+The refactoring enforces three fundamental object-oriented design principles:
+
+\begin{enumerate}[leftmargin=*, label=\textbf{\arabic*.}]
+    \item \textbf{Open/Closed Principle (OCP)} \\
+    Classes are open for extension (new factories can be added) but closed for modification (existing factories and the abstract class do not need to change).
+
+    \item \textbf{Single Responsibility Principle (SRP)} \\
+    Each class has one reason to change. \texttt{Bus} changes only if bus behaviour changes. \texttt{BusFactory} changes only if bus creation changes. \texttt{VehicleFactory} changes only if the shared ordering logic changes.
+
+    \item \textbf{Dependency Inversion Principle (DIP)} \\
+    High-level modules (\texttt{main}) depend on abstractions (\texttt{VehicleFactory}, \texttt{Vehicle}), not on concrete implementations (\texttt{Bus}, \texttt{Taxi}).
+\end{enumerate}
+
+\section{Conclusion}
+
+The Smart Transportation Management System was successfully refactored from an unstructured prototype into a clean, scalable system using the \textbf{Factory Method Design Pattern}. The original vehicle classes provided a solid foundation through the \texttt{Vehicle} interface, but the system lacked any controlled creation mechanism.
+
+By introducing the abstract \texttt{VehicleFactory} class and four corresponding concrete factory classes, the system now separates object creation from business logic entirely. The client code (the \texttt{main} method) operates only on abstract types, making the system easy to read, extend, and maintain.
+
+The most tangible practical benefit is extensibility: if the transportation company decides to add a new vehicle type --- say, a \texttt{Ferry} or a \texttt{Helicopter} --- a developer needs to write exactly two new classes (\texttt{Ferry} and \texttt{FerryFactory}) and add one case to the factory selector. Not a single line of existing, tested code needs to be changed.
+
+This is the promise of the Factory Method Design Pattern: \textit{grow your system by adding, not by modifying.}
+
+\end{document}
